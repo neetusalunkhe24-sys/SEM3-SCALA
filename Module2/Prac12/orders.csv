@@ -1,0 +1,6 @@
+customer_id,city,order_id,product,amount
+101,Mumbai,5001,Laptop,55000
+102,Pune,5002,Mobile,25000
+103,Delhi,5003,Headphones,3000
+104,Bangalore,5004,Monitor,15000
+106,Hyderabad,5005,Keyboard,2000
