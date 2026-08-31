@@ -1,0 +1,43 @@
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("CSV Join Example") \
+    .master("local[*]") \
+    .getOrCreate()
+
+customers_df = spark.read \
+    .option("header", "true") \
+    .option("inferSchema", "true") \
+    .csv("customers.csv")
+
+orders_df = spark.read \
+    .option("header", "true") \
+    .option("inferSchema", "true") \
+    .csv("orders.csv")
+
+print("========== CUSTOMERS DATA ==========")
+customers_df.show()
+
+print("========== ORDERS DATA ==========")
+orders_df.show()
+
+joined_df = customers_df.join(
+    orders_df,
+    on=["customer_id", "city"],
+    how="inner"
+)
+
+print("========== JOINED DATA ==========")
+joined_df.show()
+
+print("========== JOINED DATA SCHEMA ==========")
+joined_df.printSchema()
+
+joined_df.coalesce(1) \
+    .write \
+    .mode("overwrite") \
+    .option("header", "true") \
+    .csv("joined_output")
+
+print("========== OUTPUT WRITTEN SUCCESSFULLY ==========")
+spark.stop()
